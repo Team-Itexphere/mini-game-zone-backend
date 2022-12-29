@@ -9,7 +9,7 @@ import {
   getGamesByCategories,
   getAllCategories,
   saveRating,
-  getRewardGames,
+  // getRewardGames,
   postCategory,
   deleteCategory,
   updateCategory,
@@ -24,7 +24,7 @@ router.get("/comment", getComments);
 router.post("/", createGame);
 router.get("/", getGameDetails);
 router.get("/all", getGames);
-router.get("/reward", getRewardGames);
+// router.get("/reward", getRewardGames);
 router.get("/search", getGamesBySearch);
 router.get("/categories", getGamesByCategories);
 router.get("/allCategory", getAllCategories);

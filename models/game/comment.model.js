@@ -6,6 +6,10 @@ const commentSchema = mongoose.Schema({
   comment: String,
   picture: String,
   name: String,
+  dateTime:{
+    type: Date,
+    default: new Date(),
+  }
 });
 
 const Comment = mongoose.model("comment", commentSchema);

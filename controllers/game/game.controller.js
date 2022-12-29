@@ -4,7 +4,7 @@ import Category from "../../models/game/category.model.js";
 import mongoose from "mongoose";
 
 export const postComment = async (req, res) => {
-  const { userId, comment, picture, name } = req.body;
+  const { userId, comment, picture, name ,dateTime } = req.body;
   const { gameid } = req.query;
 
   // console.log(name);
@@ -14,6 +14,7 @@ export const postComment = async (req, res) => {
     comment: comment,
     picture: picture,
     name: name,
+    dateTime: new Date().toISOString(),
   });
 
   try {
@@ -157,17 +158,17 @@ export const saveRating = async (req, res) => {
   }
 };
 
-export const getRewardGames = async (req, res) => {
-  try {
-    const getAllRewardGames = await Game.find({
-      isRewardGame: "true",
-    });
+// export const getRewardGames = async (req, res) => {
+//   try {
+//     const getAllRewardGames = await Game.find({
+//       isRewardGame: "true",
+//     });
 
-    res.status(200).json(getAllRewardGames);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-};
+//     res.status(200).json(getAllRewardGames);
+//   } catch (error) {
+//     res.status(404).json({ message: error.message });
+//   }
+// };
 //post category
 export const postCategory = async (req, res) => {
   const { categoryName, description, _id, icon } = req.body;
