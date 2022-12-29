@@ -8,7 +8,7 @@ const commentSchema = mongoose.Schema({
   name: String,
   dateTime:{
     type: Date,
-    default: new Date(),
+    // default: new Date(),
   }
 });
 
