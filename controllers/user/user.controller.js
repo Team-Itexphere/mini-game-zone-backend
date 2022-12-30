@@ -5,8 +5,8 @@ import { OAuth2Client } from "google-auth-library";
 import UserModel from "../../models/user.model.js";
 import { addPoints } from "../../constant/constant.js";
 
-const client = new OAuth2Client(
-  "988836340451-pqpi4evnl7qut2h2b647p5rttkjrqbg0.apps.googleusercontent.com"
+const client = new OAuth2Client("862901280150-r12s47uku8p1vutqnjhagfgkppk81qq2.apps.googleusercontent.com"
+  // "988836340451-pqpi4evnl7qut2h2b647p5rttkjrqbg0.apps.googleusercontent.com"
 );
 
 export const signin = (req, res) => {
@@ -17,8 +17,8 @@ export const signin = (req, res) => {
   client
     .verifyIdToken({
       idToken: tokenId,
-      audience:
-        "988836340451-pqpi4evnl7qut2h2b647p5rttkjrqbg0.apps.googleusercontent.com",
+      audience:"862901280150-r12s47uku8p1vutqnjhagfgkppk81qq2.apps.googleusercontent.com"
+        // "988836340451-pqpi4evnl7qut2h2b647p5rttkjrqbg0.apps.googleusercontent.com",
     })
     .then((response) => {
       const { email_verified, name, email, picture } = response.payload;
