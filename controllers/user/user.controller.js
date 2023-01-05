@@ -138,20 +138,20 @@ export const getUser = async (req, res) => {
   }
 };
 
-export const updateUser = async (req, res) => {
-  const { id } = req.params;
-  const updatedUser = req.body;
+// export const updateUser = async (req, res) => {
+//   const { id } = req.params;
+//   const updatedUser = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send(`No User with id: ${id}`);
-  try {
-    await UserModel.findByIdAndUpdate(id, updatedUser, { new: true });
+//   if (!mongoose.Types.ObjectId.isValid(id))
+//     return res.status(404).send(`No User with id: ${id}`);
+//   try {
+//     await UserModel.findByIdAndUpdate(id, updatedUser, { new: true });
 
-    res.json(updatedUser);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-};
+//     res.json(updatedUser);
+//   } catch (error) {
+//     res.status(404).json({ message: error.message });
+//   }
+// };
 
 export const updatePoints = async (req, res) => {
   // const userId = req.params;
@@ -216,12 +216,16 @@ export const deletetUsers = async (req, res) => {
 };
 
 export const updateUsers = async (req, res) => {
-  const { id, name, email, points } = req.body;
+  const { _id, name, country, aboutMe , address , contactPhone  } = req.body;
   try {
-    await UserModel.findByIdAndUpdate(id, {
+    await UserModel.findByIdAndUpdate(_id, {
       name: name,
-      email: email,
-      points: points,
+      country:country,
+      aboutMe: aboutMe,
+      address: address,
+      contactPhone:contactPhone  
+      // email: email,
+      // points: points,
     });
     //console.log('err')
     res.status(200).json({ message: "successfully updated" });
