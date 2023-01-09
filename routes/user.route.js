@@ -8,6 +8,9 @@ import {
   postUsers,
   deletetUsers,
   updateUsers,
+  contactUs,
+  getAllcontactUs,
+  deleteContactUs,
 } from "../controllers/user/user.controller.js";
 
 const router = express.Router();
@@ -20,5 +23,9 @@ router.get("/all", getAllUsers);
 router.post("/add", postUsers);
 router.delete("/deleteuser", deletetUsers);
 router.put("/updateuser", updateUsers);
+
+router.get("/getmessage",getAllcontactUs);
+router.post("/postmessage",contactUs);
+router.delete("/deletemessage",deleteContactUs);
 
 export default router;

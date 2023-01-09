@@ -4,6 +4,7 @@ import { OAuth2Client } from "google-auth-library";
 
 import UserModel from "../../models/user.model.js";
 import { addPoints } from "../../constant/constant.js";
+import Message from "../../models/contactUs.model.js";
 
 const client = new OAuth2Client("862901280150-r12s47uku8p1vutqnjhagfgkppk81qq2.apps.googleusercontent.com"
   // "988836340451-pqpi4evnl7qut2h2b647p5rttkjrqbg0.apps.googleusercontent.com"
@@ -229,6 +230,48 @@ export const updateUsers = async (req, res) => {
     });
     //console.log('err')
     res.status(200).json({ message: "successfully updated" });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getAllcontactUs = async (req, res) => {
+  try {
+    const getAllMessages = await Message.find();
+    // console.log(getAllCategories);
+    res.status(200).json(getAllMessages);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+
+export const contactUs = async (req, res) => {
+  console.log('getAllmessages',res);
+  const {userId ,firstName ,lastName, email, message } = req.body;
+  const saveMessage = new Message({
+    userId:userId,
+    firstName:firstName,
+    lastName: lastName,
+    email: email,
+    message: message,
+  });
+
+  try {
+    await saveMessage.save();
+    res.status(200).json(saveMessage);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+
+export const deleteContactUs = async (req, res) => {
+  const { _id } = req.body;
+  try {
+    await Message.findByIdAndDelete(_id);
+    //console.log('err')
+    res.status(200).json({ message: "successfully deleted" });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
