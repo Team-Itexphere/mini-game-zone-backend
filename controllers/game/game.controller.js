@@ -78,40 +78,59 @@ export const getGameDetails = async (req, res) => {
   }
 };
 export const getGames = async (req, res) => {
+
+  const skip = req.query.skip ? Number(req.query.skip) : 0;
+  const DEFAULT_LIMIT = 12;
+
   try {
-    const getAllGames = await Game.find();
-    res.status(200).json(getAllGames);
+    const total = await Game.countDocuments();
+    const getAllGames = await Game.find().skip(skip).limit(DEFAULT_LIMIT);
+
+    res.status(200).json({
+      records:getAllGames,
+      total:total
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
 export const getGamesBySearch = async (req, res) => {
+
+  const skip = req.query.skip ? Number(req.query.skip) : 0;
   const { searchQuery } = req.query;
+  const DEFAULT_LIMIT = 10;
 
   try {
     const name = new RegExp(searchQuery, "i");
-    const getSearchGames = await Game.find({
-      name: name,
-    });
+    const total = await Game.find({name: name,}).countDocuments();
+    const getSearchGames = await Game.find({name: name,}).skip(skip).limit(DEFAULT_LIMIT);
     // console.log(getSearchGames)
 
-    res.status(200).json(getSearchGames);
+    res.status(200).json({
+      records:getSearchGames,
+      total:total
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
 export const getGamesByCategories = async (req, res) => {
+  const skip = req.query.skip ? Number(req.query.skip) : 0;
   const { category } = req.query;
+  const DEFAULT_LIMIT = 10;
 
   try {
     // const categoryName = new RegExp(category, "i");
     // console.log(categoryName);
-    const getGameCategory = await Game.find({
-      categories: category,
+    const total = await Game.find({categories: category,}).countDocuments();
+    const getGameCategory = await Game.find({categories: category,}).skip(skip).limit(DEFAULT_LIMIT);
+    
+    res.status(200).json({
+      records:getGameCategory,
+      total:total
     });
-    res.status(200).json(getGameCategory);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -158,17 +177,23 @@ export const saveRating = async (req, res) => {
   }
 };
 
-// export const getRewardGames = async (req, res) => {
-//   try {
-//     const getAllRewardGames = await Game.find({
-//       isRewardGame: "true",
-//     });
+export const getRewardGames = async (req, res) => {
+  const skip = req.query.skip ? Number(req.query.skip) : 0;
+  const DEFAULT_LIMIT = 10;
+  try {
+    const total = await Game.countDocuments();
+    const getAllGames = await Game.find().skip(skip).limit(DEFAULT_LIMIT);;
+    //const getAllRewardGames = getAllGames.filter(dt=>{return dt.isRewardGame === 'true';}).skip(skip).limit(DEFAULT_LIMIT);
+    res.status(200).json({
+      records:getAllGames,
+      total:total
+    });
+    
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
 
-//     res.status(200).json(getAllRewardGames);
-//   } catch (error) {
-//     res.status(404).json({ message: error.message });
-//   }
-// };
 //post category
 export const postCategory = async (req, res) => {
   const { categoryName, description, _id, icon } = req.body;
