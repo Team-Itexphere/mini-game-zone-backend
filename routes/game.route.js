@@ -16,6 +16,7 @@ import {
   updateGame,
   deleteGame,
   getAdminGames,
+  getLatestGames,
 } from "../controllers/game/game.controller.js";
 
 const router = express.Router();
@@ -26,7 +27,7 @@ router.post("/", createGame);
 router.get("/", getGameDetails);
 router.get("/all", getGames);
 router.get("/adminGames",getAdminGames)
-// router.get("/reward", getRewardGames);
+router.get("/latestGames",getLatestGames)
 router.get("/search", getGamesBySearch);
 router.get("/categories", getGamesByCategories);
 router.get("/allCategory", getAllCategories);

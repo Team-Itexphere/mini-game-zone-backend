@@ -81,9 +81,22 @@ export const getGameDetails = async (req, res) => {
 export const getAdminGames = async (req, res) => {
 
   try {
-    const getAdminGames = await Game.find();
+    const AdminGames = await Game.find();
 
-    res.status(200).json(getAdminGames);
+    res.status(200).json(AdminGames);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getLatestGames = async (req, res) => {
+  const limit = req.body.limit ? Number(req.body.limit) :12;
+
+  try {
+    const LatestGames = await Game.find().sort({uploadDate:-1}).limit(limit);
+
+    res.status(200).json({records:LatestGames,
+    limit:limit});
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -96,10 +109,10 @@ export const getGames = async (req, res) => {
 
   try {
     const total = await Game.countDocuments();
-    const getAllGames = await Game.find().skip(skip).limit(DEFAULT_LIMIT);
+    const AllGames = await Game.find().skip(skip).limit(DEFAULT_LIMIT);
 
     res.status(200).json({
-      records:getAllGames,
+      records:AllGames,
       total:total
     });
   } catch (error) {
@@ -111,7 +124,7 @@ export const getGamesBySearch = async (req, res) => {
 
   const skip = req.query.skip ? Number(req.query.skip) : 0;
   const { searchQuery } = req.query;
-  const DEFAULT_LIMIT = 10;
+  const DEFAULT_LIMIT = 12;
 
   try {
     const name = new RegExp(searchQuery, "i");
