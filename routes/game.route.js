@@ -15,6 +15,7 @@ import {
   updateCategory,
   updateGame,
   deleteGame,
+  getAdminGames,
 } from "../controllers/game/game.controller.js";
 
 const router = express.Router();
@@ -24,6 +25,7 @@ router.get("/comment", getComments);
 router.post("/", createGame);
 router.get("/", getGameDetails);
 router.get("/all", getGames);
+router.get("/adminGames",getAdminGames)
 // router.get("/reward", getRewardGames);
 router.get("/search", getGamesBySearch);
 router.get("/categories", getGamesByCategories);
