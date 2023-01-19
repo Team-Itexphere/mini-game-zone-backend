@@ -93,7 +93,7 @@ export const getLatestGames = async (req, res) => {
   const limit = req.body.limit ? Number(req.body.limit) :12;
 
   try {
-    const LatestGames = await Game.find().sort({uploadDate:-1}).limit(limit);
+    const LatestGames = await Game.find().sort({createdDate:-1}).limit(limit);
 
     res.status(200).json({records:LatestGames,
     limit:limit});
@@ -176,7 +176,7 @@ export const getGamesByCategories = async (req, res) => {
 export const getAllCategories = async (req, res) => {
   try {
     const getAllCategories = await Category.find();
-    // console.log(getAllCategories);
+    //console.log('categories:::',getAllCategories);
     res.status(200).json(getAllCategories);
   } catch (error) {
     res.status(404).json({ message: error.message });

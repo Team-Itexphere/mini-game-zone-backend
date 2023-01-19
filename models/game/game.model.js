@@ -7,7 +7,7 @@ const gameSchema = mongoose.Schema({
   categories: String,
   id: String,
   gameUrl: String,
-  uploadDate: {
+  createdDate: {
     type: Date,
     default: new Date(),
   },
@@ -20,6 +20,6 @@ const gameSchema = mongoose.Schema({
   ],
 });
 
-const Game = mongoose.model("GameData", gameSchema);
+const Game = mongoose.model("Game", gameSchema);
 
 export default Game;

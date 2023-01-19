@@ -33,7 +33,7 @@ export const signin = (req, res) => {
             });
           } else {
             if (user) {
-              // console.log('user in db')
+              //  console.log('user in db')
               const token = jwt.sign({ _id: user._id }, "test", {
                 expiresIn: "7d",
               });
@@ -44,7 +44,7 @@ export const signin = (req, res) => {
                 user: { _id, name, email, picture, isAdmin, points },
               });
             } else {
-              // console.log('user not in db')
+              //  console.log('user not in db')
               let password = email;
               let newUser;
 
@@ -181,7 +181,7 @@ export const updatePoints = async (req, res) => {
 export const getAllUsers = async (req, res) => {
   try {
     const getAllCategories = await UserModel.find();
-    // console.log(getAllCategories);
+    console.log('getUsers',getAllCategories);
     res.status(200).json(getAllCategories);
   } catch (error) {
     res.status(404).json({ message: error.message });
