@@ -14,7 +14,7 @@ export const postComment = async (req, res) => {
     comment: comment,
     picture: picture,
     name: name,
-    dateTime: new Date().toISOString(),
+    createdDate: new Date().toISOString(),
   });
 
   try {
@@ -26,15 +26,19 @@ export const postComment = async (req, res) => {
 };
 
 export const getComments = async (req, res) => {
+
+  const skip = req.query.skip ? Number(req.query.skip) :0;
   const { gameid } = req.query;
-  // console.log(gameid)
+  const DEFAULT_LIMIT = 2;
 
   try {
-    const comments = await Comment.find({
-      gameId: gameid,
-    });
+    const total = await Comment.find({gameId: gameid,}).countDocuments();
+    const comments = await Comment.find({gameId: gameid,}).sort({createdDate:-1}).skip(skip).limit(DEFAULT_LIMIT);
     // console.log(comments)
-    res.status(200).json(comments);
+    res.status(200).json({
+      records:comments,
+      total
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

@@ -6,7 +6,7 @@ const commentSchema = mongoose.Schema({
   comment: String,
   picture: String,
   name: String,
-  dateTime:{
+  createdDate:{
     type: Date,
     // default: new Date(),
   }

@@ -22,7 +22,7 @@ import {
 const router = express.Router();
 
 router.post("/comment", postComment);
-router.get("/comment", getComments);
+router.get("/getcomments", getComments);
 router.post("/", createGame);
 router.get("/", getGameDetails);
 router.get("/all", getGames);
