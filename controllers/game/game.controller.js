@@ -2,6 +2,7 @@ import Comment from "../../models/game/comment.model.js";
 import Game from "../../models/game/game.model.js";
 import Category from "../../models/game/category.model.js";
 import mongoose from "mongoose";
+import Rating from "../../models/game/rating.model.js";
 
 export const postComment = async (req, res) => {
   const { userId, comment, picture, name ,dateTime } = req.body;
@@ -190,33 +191,65 @@ export const getAllCategories = async (req, res) => {
 export const saveRating = async (req, res) => {
   const { userid, gameid } = req.query;
   const { newValue } = req.body;
-  try {
-    if (!mongoose.Types.ObjectId.isValid(gameid))
-      return res.status(404).send(`No Game with that id: ${gameid} `);
+  
+const ratingData = await Rating.find({ $and:[{ gameId:gameid},{userId:userid} ]}) 
+//ratingData.map((rate) => ( console.log('mongoDB id:', rate._id))) 
 
-    const gameData = await Game.findById(gameid);
-    const index = gameData.rating.findIndex(
-      ({ userId }) => userId === String(userid)
-    );
+      try {
+        
+      if (ratingData.length === 0){
+            console.log('0',ratingData.length)          
+            const newRating = new Rating({
+              gameId: gameid,
+              userId:userid,
+              ratedValue:newValue
+              
+            });
+            await newRating.save();
+            res.status(201).json(newRating);
+            //console.log('0',ratingData.length)
 
-    // console.log('index:', index)
+      }else if((ratingData.length === 1)){
+      //console.log('raings',ratingData[0]._id)      
+      
+          await Rating.findByIdAndUpdate(ratingData[0]._id, {
+            gameId: gameid,
+            userId:userid,
+            ratedValue:newValue
+          });
 
-    if (index === -1) {
-      // fist time rating
-      gameData.rating.push({ userId: userid, ratedValue: newValue });
-    } else {
-      // user want to change their rating
-      gameData.rating = gameData.rating.filter(
-        ({ userId }) => userId !== String(userid)
-      );
-      gameData.rating.push({ userId: userid, ratedValue: newValue });
-    }
+        }else{
+         alert('Unsuccussfull')
+        }
 
-    await Game.findByIdAndUpdate(gameid, gameData, { new: true });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
+      } catch (error) {
+        res.status(404).json({ message: error.message });
+      }
   }
-};
+  
+
+  export const getAvgRating = async (req, res) => {
+
+    const { gameid } = req.query;
+  
+    try {
+      // const total = await Rating.find({gameId: gameid,}).countDocuments();
+      const ratingData = await Rating.find({gameId: gameid,});
+      // const sum =  ratingData.map(item => item.ratedValue).reduce((prev, next) => prev + next);
+      // console.log('total',ratingData.length)
+    //  if (ratingData.length > 0){
+    //     const avgRating = sum/total;
+    //     res.status(200).json({avgRating});
+    // }else{
+    //   const avgRating = 0;
+    //     res.status(200).json({avgRating});
+    // }
+     res.status(200).json({ratingData})
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
+  };
+
 
 //post category
 export const postCategory = async (req, res) => {

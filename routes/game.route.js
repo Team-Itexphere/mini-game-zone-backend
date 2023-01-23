@@ -9,7 +9,6 @@ import {
   getGamesByCategories,
   getAllCategories,
   saveRating,
-  // getRewardGames,
   postCategory,
   deleteCategory,
   updateCategory,
@@ -17,6 +16,7 @@ import {
   deleteGame,
   getAdminGames,
   getLatestGames,
+  getAvgRating,
 } from "../controllers/game/game.controller.js";
 
 const router = express.Router();
@@ -32,6 +32,7 @@ router.get("/search", getGamesBySearch);
 router.get("/categories", getGamesByCategories);
 router.get("/allCategory", getAllCategories);
 router.post("/rate", saveRating);
+router.get("/rating",getAvgRating)
 router.post("/category", postCategory);
 router.delete("/deleteCategory", deleteCategory);
 router.put("/updateCategory", updateCategory);

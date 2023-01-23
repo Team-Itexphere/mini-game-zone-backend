@@ -12,12 +12,7 @@ const gameSchema = mongoose.Schema({
     default: new Date(),
   },
   isRewardGame: String,
-  rating: [
-    {
-      userId: String,
-      ratedValue: Number,
-    },
-  ],
+
 });
 
 const Game = mongoose.model("Game", gameSchema);
