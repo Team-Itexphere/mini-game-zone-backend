@@ -17,11 +17,14 @@ import {
   getAdminGames,
   getLatestGames,
   getAvgRating,
+  getPoints,
+  postPoints,
 } from "../controllers/game/game.controller.js";
 
 const router = express.Router();
 
 router.post("/comment", postComment);
+router.post("/postPoints", postPoints);
 router.get("/getcomments", getComments);
 router.post("/", createGame);
 router.get("/", getGameDetails);
@@ -32,7 +35,8 @@ router.get("/search", getGamesBySearch);
 router.get("/categories", getGamesByCategories);
 router.get("/allCategory", getAllCategories);
 router.post("/rate", saveRating);
-router.get("/rating",getAvgRating)
+router.get("/rating",getAvgRating);
+router.get("/points",getPoints)
 router.post("/category", postCategory);
 router.delete("/deleteCategory", deleteCategory);
 router.put("/updateCategory", updateCategory);

@@ -3,6 +3,7 @@ import Game from "../../models/game/game.model.js";
 import Category from "../../models/game/category.model.js";
 import mongoose from "mongoose";
 import Rating from "../../models/game/rating.model.js";
+import Points from "../../models/game/points.model.js";
 
 export const postComment = async (req, res) => {
   const { userId, comment, picture, name ,dateTime } = req.body;
@@ -229,26 +230,73 @@ const ratingData = await Rating.find({ $and:[{ gameId:gameid},{userId:userid} ]}
   
 
   export const getAvgRating = async (req, res) => {
-
     const { gameid } = req.query;
   
     try {
-      // const total = await Rating.find({gameId: gameid,}).countDocuments();
-      const ratingData = await Rating.find({gameId: gameid,});
-      // const sum =  ratingData.map(item => item.ratedValue).reduce((prev, next) => prev + next);
-      // console.log('total',ratingData.length)
-    //  if (ratingData.length > 0){
-    //     const avgRating = sum/total;
-    //     res.status(200).json({avgRating});
-    // }else{
-    //   const avgRating = 0;
-    //     res.status(200).json({avgRating});
-    // }
+    const ratingData = await Rating.find({gameId: gameid,});
+
      res.status(200).json({ratingData})
     } catch (error) {
       res.status(404).json({ message: error.message });
     }
   };
+
+  export const getPoints = async (req, res) => {
+    const { gameid } = req.query;
+
+    try {
+      const pointData = await Points.find({gameId: gameid,}).sort({score:-1}).limit(11)
+      res.status(200).json({pointData});
+      
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
+  };
+
+
+  export const postPoints = async (req, res) => {
+    const { userid, gameid } = req.query;
+    const { score ,name ,picture } = req.body;
+    
+  const pointData = await Points.find({ $and:[{ gameId:gameid},{userId:userid} ]}) 
+  //ratingData.map((rate) => ( console.log('mongoDB id:', rate._id))) 
+  
+        try {
+          
+        if (pointData.length === 0){
+              console.log('0',pointData.length)          
+              const newPoint = new Points({
+                gameId: gameid,
+                userId:userid,
+                score:score,
+                picture:picture,
+                name:name,
+                
+              });
+              await newPoint.save();
+              res.status(201).json(newPoint);
+              //console.log('0',ratingData.length)
+  
+        }else if((pointData.length === 1)){
+        //console.log('raings',ratingData[0]._id)      
+        
+            await Points.findByIdAndUpdate(pointData[0]._id, {
+              gameId: gameid,
+              userId:userid,
+              score:score,
+              picture:picture,
+              name:name,
+            });
+  
+          }else{
+           alert('Unsuccussfull')
+          }
+  
+        } catch (error) {
+          res.status(404).json({ message: error.message });
+        }
+    }
+
 
 
 //post category
